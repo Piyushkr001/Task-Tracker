@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom"; // Corrected import
 
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
@@ -12,7 +12,7 @@ const AdminDashboard = () => {
         const isAdminLoggedIn = localStorage.getItem("admin_logged_in");
 
         if (!isAdminLoggedIn) {
-            navigate("/admin"); // Redirect to login if admin is not logged in
+            navigate("/admin");
             return;
         }
 
@@ -30,30 +30,42 @@ const AdminDashboard = () => {
     }, [navigate]);
 
     return (
-        <div className="max-w-3xl mx-auto my-10 p-6 bg-white shadow-lg rounded-lg">
-            <h1 className="text-3xl font-bold text-center mb-4">Welcome Admin!</h1>
-            <h2 className="text-2xl font-bold mb-4 text-center">Dashboard</h2>
+        <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-100 py-12 px-4">
+            <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-cyan-200">
+                <h1 className="text-4xl font-bold text-center text-cyan-700 mb-2">Welcome, Admin</h1>
+                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">User Dashboard</h2>
 
-            {error && <p className="text-red-500">{error}</p>}
+                {error && <p className="text-red-500 text-center font-medium mb-4">{error}</p>}
 
-            <p className="mb-4 font-semibold text-2xl text-cyan-600 text-center">Total Users: {totalUsers}</p>
+                <p className="text-xl text-center text-cyan-800 font-semibold mb-6">
+                    Total Registered Users: <span className="text-cyan-600 font-bold">{totalUsers}</span>
+                </p>
 
-            <table className="min-w-full bg-white border border-gray-300">
-                <thead>
-                    <tr className="bg-cyan-600 text-white">
-                        <th className="py-2 px-4 border">Name</th>
-                        <th className="py-2 px-4 border">Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user) => (
-                        <tr key={user._id} className="border-b">
-                            <td className="py-2 px-4 border">{user.name}</td>
-                            <td className="py-2 px-4 border">{user.email}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                {users.length > 0 ? (
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full text-sm border border-gray-300 shadow-sm rounded">
+                            <thead>
+                                <tr className="bg-cyan-600 text-white text-left">
+                                    <th className="py-3 px-4 border-b">Name</th>
+                                    <th className="py-3 px-4 border-b">Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map((user) => (
+                                    <tr key={user._id} className="hover:bg-gray-100 transition">
+                                        <td className="py-3 px-4 border-b">{user.name}</td>
+                                        <td className="py-3 px-4 border-b">{user.email}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <p className="text-center text-gray-600 font-medium mt-4">
+                        No users registered yet.
+                    </p>
+                )}
+            </div>
         </div>
     );
 };

@@ -1,50 +1,55 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // fixed import
 
 const Admin = () => {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
-    if (password === "admin123") { // Hardcoded admin password
-      localStorage.setItem("admin_logged_in", "true"); // Store admin session
-      alert("Admin login successful!");
-      navigate("/admin-dashboard"); 
+    if (password === 'admin123') {
+      localStorage.setItem('admin_logged_in', 'true');
+      alert('Admin login successful!');
+      navigate('/admin-dashboard');
     } else {
-      setError("Invalid password");
+      setError('Invalid password');
     }
   };
 
   return (
-    <div className="flex justify-center py-10">
-      <div className="bg-cyan-50 p-6 border border-cyan-500 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center text-cyan-900 mb-4">Admin Login</h1>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-100 px-4">
+      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl border border-cyan-200">
+        <h2 className="text-3xl font-bold text-center text-cyan-800 mb-6">Admin Login</h2>
 
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && (
+          <p className="text-red-500 text-center mb-4 font-medium">{error}</p>
+        )}
 
-        <form className="border p-4 rounded-md shadow-md bg-gray-50 space-y-4" onSubmit={handleLogin} >
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div>
+            <label className="block text-cyan-700 font-semibold mb-1">Admin Password</label>
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+            />
+          </div>
           <button
             type="submit"
-            className="w-full bg-cyan-600 text-white text-lg py-2 rounded-lg hover:bg-cyan-800"
+            className="w-full py-2 bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-800 transition"
           >
             Login
           </button>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;
